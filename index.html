@@ -1,18 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Web Components</title>
+  <title>Template</title>
+
+  <template id="my-duration-template">
+    <style>
+      .container {
+        background-color: cyan;
+      }
+    </style>
+
+    <span class="container"></span>
+  </template>
+
+  <script>
+  'use strict';
+  var MyDurationProto = Object.create(HTMLElement.prototype);
+
+  MyDurationProto.createdCallback = function(){
+    let minutes = this.getAttribute('minutes');
+    let display = this.getAttribute('display');
+    let minutesLabel = (minutes === "1" ? 'minute' : 'minutes');
+    let output = `${minutes} ${minutesLabel}`;
+
+    switch(display){
+      case 'hours':
+        let hours = Math.trunc(minutes / 60);
+        let remainder = minutes % 60;
+        let hoursLabel = (hours === "1" ? 'hour' : 'hours');
+        let remainderLabel = (remainder === 1 ? 'minute' : 'minutes');
+        output = `${hours} ${hoursLabel} ${remainder} ${remainderLabel}`;
+        break;
+    }
+
+//     let template = document.querySelector('#my-duration-template').content;
+    let template = document.querySelector('#my-duration-template');
+    let el = document.importNode(template, true);
+    el.querySelector('.container').textContent = output;
+    this.appendChild(el);
+  };
+
+  //NOTE: all custom element names must contain a hyphen
+  document.registerElement('my-duration', {
+     prototype: MyDurationProto
+  });
+  </script>
 </head>
 <body>
-    <h1>Web Components</h1>
+  <p>The duration is: <my-duration minutes="121" display="hours" /></p>
+  <p>The duration is: <my-duration minutes=1 /></p>
 
-    <ul>
-        <li><a href="input/index.html">Input Examples</a></li>
-        <li><a href="tagsoup/index.html">Tag Soup</a></li>
-        <li><a href="custom-element/index.html">Custom Element</a></li>
-        <li><a href="template/index.html">HTML Template</a></li>
-        <li><a href="shadow-dom/index.html">Shadow DOM</a></li>
-        <li><a href="html-imports/index.html">HTML Imports</a></li>
-    </ul>
+  <p class="container"> Hello Max!</p>
+
 </body>
 </html>

@@ -6,7 +6,7 @@
   <template id="my-duration-template">
     <style>
       .container {
-        background-color: gold;
+        background-color: cyan;
       }
     </style>
 
@@ -20,20 +20,21 @@
   MyDurationProto.createdCallback = function(){
     let minutes = this.getAttribute('minutes');
     let display = this.getAttribute('display');
-    let minutesLabel = (minutes === 1 ? 'minute' : 'minutes');
+    let minutesLabel = (minutes === "1" ? 'minute' : 'minutes');
     let output = `${minutes} ${minutesLabel}`;
 
     switch(display){
       case 'hours':
         let hours = Math.trunc(minutes / 60);
         let remainder = minutes % 60;
-        let hoursLabel = (hours === 1 ? 'hour' : 'hours');
+        let hoursLabel = (hours === "1" ? 'hour' : 'hours');
         let remainderLabel = (remainder === 1 ? 'minute' : 'minutes');
         output = `${hours} ${hoursLabel} ${remainder} ${remainderLabel}`;
         break;
     }
 
-    let template = document.querySelector( '#my-duration-template').content;
+    let template = document.querySelector('#my-duration-template').content;
+//     let template = document.querySelector('#my-duration-template');
     let el = document.importNode(template, true);
     el.querySelector('.container').textContent = output;
     this.appendChild(el);
@@ -46,9 +47,11 @@
   </script>
 </head>
 <body>
-  <p>The duration is <my-duration minutes="91" display="hours" /></p>
+  <p>The duration is: <my-duration minutes="200" display="hours" /></p>
+  <p>The duration is: <my-duration minutes=1 /></p>
+  <p>The duration is: <my-duration minutes=1 /></p>
 
-  <p class="container"> Hi Max!</p>
+  <p class="container"> Hello Max!</p>
 
 </body>
 </html>
